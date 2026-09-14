@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Junho | LLM Full-Stack Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --bg:#05060a;
+    --bg2:#0a0d16;
+    --card:rgba(255,255,255,0.04);
+    --card-border:rgba(255,255,255,0.09);
+    --txt:#f2f4f8;
+    --sub:#9aa3b5;
+    --accent:#7dd3fc;
+    --accent2:#a78bfa;
+    --accent3:#34d399;
+    --gold:#fbbf24;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--txt);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+    line-height:1.6;
+  }
+  h1,h2,h3,.brand{font-family:'Space Grotesk', sans-serif;}
+
+  /* ---------- background fx ---------- */
+  .bg-glow{
+    position:fixed; inset:0; z-index:-2;
+    background:
+      radial-gradient(600px circle at 15% 20%, rgba(125,211,252,0.14), transparent 60%),
+      radial-gradient(700px circle at 85% 15%, rgba(167,139,250,0.14), transparent 60%),
+      radial-gradient(800px circle at 50% 90%, rgba(52,211,153,0.10), transparent 60%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+  }
+  .grid-overlay{
+    position:fixed; inset:0; z-index:-1; opacity:0.35;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 30%, black 40%, transparent 100%);
+  }
+  .orb{position:fixed; border-radius:50%; filter:blur(70px); z-index:-1; opacity:0.35; pointer-events:none;}
+  .orb1{width:380px; height:380px; background:var(--accent); top:-120px; left:-100px; animation:float1 14s ease-in-out infinite;}
+  .orb2{width:420px; height:420px; background:var(--accent2); bottom:-140px; right:-120px; animation:float2 16s ease-in-out infinite;}
+  @keyframes float1{0%,100%{transform:translate(0,0);}50%{transform:translate(60px,40px);}}
+  @keyframes float2{0%,100%{transform:translate(0,0);}50%{transform:translate(-50px,-30px);}}
+
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 6%;
+    backdrop-filter:blur(14px);
+    background:rgba(5,6,10,0.55);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .brand{font-weight:700; font-size:1.15rem; letter-spacing:0.5px;}
+  .brand span{background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  nav ul{list-style:none; display:flex; gap:32px;}
+  nav a{color:var(--sub); text-decoration:none; font-size:0.92rem; font-weight:500; transition:color .25s;}
+  nav a:hover{color:var(--txt);}
+
+  section{padding:130px 6% 90px; max-width:1180px; margin:0 auto; position:relative;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    padding-top:100px;
+  }
+  .tag{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:7px 16px; border-radius:999px;
+    border:1px solid var(--card-border); background:var(--card);
+    font-size:0.82rem; color:var(--sub); width:fit-content; margin-bottom:28px;
+  }
+  .tag .dot{width:7px; height:7px; border-radius:50%; background:var(--accent3); box-shadow:0 0 10px var(--accent3);}
+  .hero h1{
+    font-size:clamp(2.6rem, 7vw, 5.2rem);
+    font-weight:700; line-height:1.05; letter-spacing:-1px;
+    margin-bottom:22px;
+  }
+  .hero h1 .grad{
+    background:linear-gradient(90deg, var(--accent), var(--accent2) 55%, var(--gold));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    background-size:200% auto; animation:shine 6s linear infinite;
+  }
+  @keyframes shine{to{background-position:200% center;}}
+  .hero p.lead{color:var(--sub); font-size:1.15rem; max-width:640px; margin-bottom:38px;}
+  .cta-row{display:flex; gap:16px; flex-wrap:wrap;}
+  .btn{
+    padding:14px 28px; border-radius:12px; font-weight:600; font-size:0.95rem;
+    text-decoration:none; display:inline-flex; align-items:center; gap:10px;
+    transition:transform .2s, box-shadow .2s;
+  }
+  .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#05060a;}
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:0 12px 30px rgba(125,211,252,0.25);}
+  .btn-ghost{border:1px solid var(--card-border); color:var(--txt); background:var(--card);}
+  .btn-ghost:hover{transform:translateY(-3px); border-color:rgba(255,255,255,0.25);}
+
+  .stats{display:flex; gap:48px; margin-top:64px; flex-wrap:wrap;}
+  .stat h3{font-size:2.1rem; font-weight:700;}
+  .stat span{color:var(--sub); font-size:0.85rem;}
+
+  /* ---------- section titles ---------- */
+  .eyebrow{color:var(--accent); font-size:0.82rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;}
+  .sec-title{font-size:clamp(1.8rem,4vw,2.6rem); font-weight:700; margin-bottom:16px;}
+  .sec-sub{color:var(--sub); max-width:600px; margin-bottom:50px;}
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:start;}
+  .glass{
+    background:var(--card); border:1px solid var(--card-border);
+    border-radius:20px; padding:32px; backdrop-filter:blur(10px);
+  }
+  .about-grid p{color:var(--sub); margin-bottom:16px;}
+  .pill-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:20px;}
+  .pill{padding:8px 16px; border-radius:999px; background:rgba(255,255,255,0.05); border:1px solid var(--card-border); font-size:0.82rem; color:var(--txt);}
+
+  /* ---------- timeline ---------- */
+  .timeline{position:relative; padding-left:32px;}
+  .timeline::before{content:''; position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:linear-gradient(180deg,var(--accent),var(--accent2),transparent);}
+  .t-item{position:relative; padding-bottom:36px;}
+  .t-item::before{content:''; position:absolute; left:-32px; top:4px; width:12px; height:12px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgba(125,211,252,0.15);}
+  .t-item h4{font-size:1.05rem; font-weight:600; margin-bottom:4px;}
+  .t-item .period{color:var(--accent); font-size:0.8rem; font-weight:600; margin-bottom:8px; display:block;}
+  .t-item p{color:var(--sub); font-size:0.92rem;}
+
+  /* ---------- cards grid (side project) ---------- */
+  .card-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .card{
+    background:var(--card); border:1px solid var(--card-border); border-radius:18px;
+    padding:28px; transition:transform .25s, border-color .25s;
+  }
+  .card:hover{transform:translateY(-6px); border-color:rgba(255,255,255,0.22);}
+  .card i{font-size:1.6rem; margin-bottom:16px; display:block;}
+  .card h4{margin-bottom:8px; font-size:1.05rem;}
+  .card p{color:var(--sub); font-size:0.88rem;}
+  .icon-a{color:var(--accent);} .icon-b{color:var(--accent2);} .icon-c{color:var(--gold);}
+
+  /* ---------- goals ---------- */
+  .goal-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:24px;}
+  .goal-card{
+    padding:30px; border-radius:20px; position:relative; overflow:hidden;
+    border:1px solid var(--card-border);
+  }
+  .goal-card.g1{background:linear-gradient(135deg, rgba(125,211,252,0.10), rgba(255,255,255,0.02));}
+  .goal-card.g2{background:linear-gradient(135deg, rgba(167,139,250,0.10), rgba(255,255,255,0.02));}
+  .goal-card.g3{background:linear-gradient(135deg, rgba(52,211,153,0.10), rgba(255,255,255,0.02));}
+  .goal-card h4{font-size:1.15rem; margin-bottom:10px;}
+  .goal-card p{color:var(--sub); font-size:0.92rem;}
+  .progress{height:8px; border-radius:999px; background:rgba(255,255,255,0.08); margin-top:18px; overflow:hidden;}
+  .progress > div{height:100%; border-radius:999px;}
+  .p1{width:62%; background:linear-gradient(90deg,var(--accent),var(--accent2));}
+  .p2{width:38%; background:linear-gradient(90deg,var(--accent3),var(--gold));}
+  .p3{width:45%; background:linear-gradient(90deg,var(--accent3),var(--accent));}
+
+  /* ---------- contact ---------- */
+  .contact-wrap{text-align:center;}
+  .social-row{display:flex; justify-content:center; gap:18px; margin-top:36px; flex-wrap:wrap;}
+  .social{
+    width:54px; height:54px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--card); border:1px solid var(--card-border);
+    color:var(--txt); font-size:1.25rem; text-decoration:none;
+    transition:transform .2s, color .2s;
+  }
+  .social:hover{transform:translateY(-5px) scale(1.05); color:var(--accent);}
+
+  footer{
+    text-align:center; padding:36px 6% 50px; color:var(--sub); font-size:0.82rem;
+    border-top:1px solid rgba(255,255,255,0.06);
+  }
+  footer .aws{color:var(--gold); font-weight:600;}
+
+  [data-reveal]{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease;}
+  [data-reveal].in{opacity:1; transform:translateY(0);}
+
+  @media(max-width:860px){
+    .about-grid{grid-template-columns:1fr;}
+    .card-grid{grid-template-columns:1fr;}
+    .goal-grid{grid-template-columns:1fr;}
+    nav ul{display:none;}
+    .stats{gap:28px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="grid-overlay"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<nav>
+  <div class="brand">JUN<span>HO</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#journey">Journey</a></li>
+    <li><a href="#project">Project</a></li>
+    <li><a href="#goals">Goals</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="tag"><span class="dot"></span> LLM Full-Stack 과정 수강 중</div>
+  <h1>안녕하세요,<br><span class="grad">준호</span>입니다.</h1>
+  <p class="lead">
+    아이디어를 끝까지 서비스로 만들어보는 게 좋아서 LLM 풀스택 과정을 시작했습니다.
+    프론트엔드부터 백엔드, 벡터DB, 배포까지 — AI 서비스가 만들어지는 전체 과정을
+    직접 경험하는 중입니다.
+  </p>
+  <div class="cta-row">
+    <a href="#contact" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Get in touch</a>
+    <a href="#project" class="btn btn-ghost"><i class="fa-solid fa-robot"></i> 프로젝트 보기</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><h3>Full-Stack</h3><span>End-to-end 개발 경험</span></div>
+    <div class="stat"><h3>RAG</h3><span>LLM 서비스 설계</span></div>
+    <div class="stat"><h3>Cloud</h3><span>AWS로 배포까지</span></div>
+  </div>
+</section>
+
+<section id="about">
+  <div data-reveal>
+    <div class="eyebrow">About Me</div>
+    <h2 class="sec-title">배우는 걸 만들어서 확인하는 사람</h2>
+    <p class="sec-sub">이론만 보고 넘어가기보다, 직접 코드를 쳐서 눈으로 확인해야 이해가 되는 편입니다.</p>
+  </div>
+  <div class="about-grid">
+    <div class="glass" data-reveal>
+      <p>LLM 풀스택 과정을 통해 프롬프트 엔지니어링, 벡터DB, 백엔드 API, 클라우드 배포까지 서비스 하나가 완성되는 전체 흐름을 배우고 있습니다.</p>
+      <p>혼자 만들어보고 싶은 아이디어가 늘 있는 편이라, 이번 과정에서 그 아이디어를 실제로 동작하는 프로젝트로 완성하는 게 목표입니다.</p>
+      <div class="pill-row">
+        <span class="pill">Python</span>
+        <span class="pill">FastAPI</span>
+        <span class="pill">LangChain</span>
+        <span class="pill">Vector DB</span>
+        <span class="pill">RAG</span>
+        <span class="pill">AWS</span>
+      </div>
+    </div>
+    <div class="glass" data-reveal>
+      <div class="card-grid" style="grid-template-columns:1fr; gap:18px;">
+        <div class="card" style="border:none; background:transparent; padding:0;">
+          <i class="fa-solid fa-layer-group icon-a"></i>
+          <h4>Full-Stack</h4>
+          <p>프론트엔드부터 백엔드, 인프라까지 전체 구조를 이해하려고 합니다</p>
+        </div>
+        <div class="card" style="border:none; background:transparent; padding:0;">
+          <i class="fa-solid fa-brain icon-b"></i>
+          <h4>LLM Engineering</h4>
+          <p>프롬프트 설계, RAG, 에이전트 구조를 직접 구현해봅니다</p>
+        </div>
+        <div class="card" style="border:none; background:transparent; padding:0;">
+          <i class="fa-solid fa-rocket icon-c"></i>
+          <h4>Ship it</h4>
+          <p>완성만 하고 끝내지 않고, 실제로 배포까지 해보는 걸 중요하게 생각합니다</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="journey">
+  <div data-reveal>
+    <div class="eyebrow">Learning Journey</div>
+    <h2 class="sec-title">과정을 따라가는 순서</h2>
+    <p class="sec-sub">LLM 풀스택 과정에서 단계별로 채워가고 있는 것들입니다.</p>
+  </div>
+  <div class="timeline" data-reveal>
+    <div class="t-item">
+      <span class="period">Now</span>
+      <h4>풀스택 배포 실습</h4>
+      <p>완성한 프로젝트를 AWS 환경에 실제로 배포해보는 단계입니다.</p>
+    </div>
+    <div class="t-item">
+      <span class="period">Step 3</span>
+      <h4>LLM 서비스 개발</h4>
+      <p>RAG, 벡터DB, 프롬프트 엔지니어링으로 실제 동작하는 AI 기능을 구현했습니다.</p>
+    </div>
+    <div class="t-item">
+      <span class="period">Step 2</span>
+      <h4>백엔드 &amp; API</h4>
+      <p>FastAPI로 서버를 구성하고 프론트엔드와 연결하는 구조를 익혔습니다.</p>
+    </div>
+    <div class="t-item">
+      <span class="period">Step 1</span>
+      <h4>기초 다지기</h4>
+      <p>Python과 웹 개발 기본기부터 다시 정리하며 과정을 시작했습니다.</p>
+    </div>
+  </div>
+</section>
+
+<section id="project">
+  <div data-reveal>
+    <div class="eyebrow">Project</div>
+    <h2 class="sec-title">직접 만들어보고 있는 것들</h2>
+    <p class="sec-sub">과정에서 완성해보려는 프로젝트 아이디어입니다.</p>
+  </div>
+  <div class="card-grid" data-reveal>
+    <div class="card">
+      <i class="fa-solid fa-comments icon-a"></i>
+      <h4>나만의 AI 챗봇</h4>
+      <p>특정 주제에 특화된 대화형 챗봇을 처음부터 직접 설계하고 구현합니다.</p>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-magnifying-glass icon-b"></i>
+      <h4>문서 기반 RAG 검색</h4>
+      <p>내 문서를 업로드하면 그 안에서 답을 찾아주는 검색 시스템을 만들어봅니다.</p>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-robot icon-c"></i>
+      <h4>풀스택 배포</h4>
+      <p>프론트엔드부터 API, 벡터DB, 배포까지 전체 흐름을 하나의 서비스로 완성합니다.</p>
+    </div>
+  </div>
+</section>
+
+<section id="goals">
+  <div data-reveal>
+    <div class="eyebrow">Goals</div>
+    <h2 class="sec-title">이번 과정의 목표</h2>
+  </div>
+  <div class="goal-grid" data-reveal>
+    <div class="goal-card g1">
+      <h4><i class="fa-solid fa-flag-checkered"></i>&nbsp; 과정 완주</h4>
+      <p>커리큘럼을 끝까지 따라가며 풀스택 개발 기본기를 탄탄히 쌓기.</p>
+      <div class="progress"><div class="p1"></div></div>
+    </div>
+    <div class="goal-card g2">
+      <h4><i class="fa-solid fa-cloud-arrow-up"></i>&nbsp; 프로젝트 배포</h4>
+      <p>혼자 힘으로 아이디어를 기획부터 배포까지 완성해보기.</p>
+      <div class="progress"><div class="p2"></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact-wrap">
+  <div data-reveal>
+    <div class="eyebrow">Contact</div>
+    <h2 class="sec-title">함께 이야기 나눠요</h2>
+    <p class="sec-sub" style="margin:0 auto 10px;">과정 관련해서 궁금한 점이나 협업 제안은 아래로 연락해 주세요.</p>
+  </div>
+  <div class="social-row" data-reveal>
+    <a class="social" href="mailto:csong1501@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+    <a class="social" href="#" title="GitHub"><i class="fa-brands fa-github"></i></a>
+    <a class="social" href="#" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+  </div>
+</section>
+
+<footer>
+  © 2026 Junho. LLM Full-Stack 과정 실습 페이지 — <span class="aws">AWS</span> S3로 배포 🚀
+</footer>
+
+<script>
+  const els = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  }, {threshold:0.15});
+  els.forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
